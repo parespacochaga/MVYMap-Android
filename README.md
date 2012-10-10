@@ -1,4 +1,4 @@
-MVYMapView-Android
+MVYMap-Android
 ==================
 
 Custom Android MapView 

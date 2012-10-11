@@ -32,6 +32,7 @@ public class MVYMapView extends MapView {
 	private Drawable customUserMarker;
 	private LocationManager locationManager;
 	private LocationListener locationListener;
+	private boolean locationCustomEnabled = false;
 	private boolean locationCustomRefreshEnabled = false;
 	private boolean locationListenerEnabled = false;
 	private MVYMapLimits mapLimits;
@@ -205,6 +206,7 @@ public class MVYMapView extends MapView {
 			else {
 				addUserLocation();
 			}
+			locationCustomEnabled = true;
 		}
 		else {
 			
@@ -350,7 +352,10 @@ public class MVYMapView extends MapView {
 	 */
 	private class MVYLocationListener implements LocationListener{
 		
+		@Override
 		public void onLocationChanged(Location location) {
+			
+			Log.v("MVYMap", "MVYMapView location changed: " + location);
 			
 			boolean firstLocation = (userGeoPoint == null);
 			userGeoPoint = new GeoPoint( (int)(location.getLatitude() * 1E6), 
@@ -361,12 +366,12 @@ public class MVYMapView extends MapView {
 				locationDelegate.MVYMapViewLocationChanged(userGeoPoint);
 			}
 			
-			if (locationCustomRefreshEnabled || firstLocation) {
+			if (locationCustomRefreshEnabled || (firstLocation && locationCustomEnabled)) {
 				// refresh custom marker of user location 
 				addUserLocation();
 			}
 			
-			if ( locationCustomRefreshEnabled == false && locationListenerEnabled == false) {
+			if (locationCustomRefreshEnabled == false && locationListenerEnabled == false) {
 				// remove listener
 				disableListenToLocations();
 			}
@@ -402,10 +407,16 @@ public class MVYMapView extends MapView {
 			customLocationOverlay = new MVYItemizedOverlay(defaultUserMarker, this);
 			customLocationOverlay.setClickEnabled(false);
 			
-			// bring POIs overlay to front
-			this.getOverlays().remove(itemizedOverlay);
-			this.getOverlays().add(customLocationOverlay);
-			this.getOverlays().add(itemizedOverlay);
+			// add custom location overlay
+			if (itemizedOverlay != null) {
+				// bring POIs overlay to front
+				this.getOverlays().remove(itemizedOverlay);
+				this.getOverlays().add(customLocationOverlay);
+				this.getOverlays().add(itemizedOverlay);
+			}
+			else {
+				this.getOverlays().add(customLocationOverlay);
+			}
 		}
 		else {
 			customLocationOverlay.cleanAllPOIs();

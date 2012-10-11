@@ -4,6 +4,8 @@ MVYMap-Android
 Custom Android MapView to help the development of 
 maps with markers, info balloons, and user location.
 
+https://github.com/parespacochaga/MVYMap-Android/blob/master/screenshot.png?raw=true
+
 To include it in your project, copy these files :
 
 	/res/drawable/mvymaps_balloon_overlay_bg_selector.xml

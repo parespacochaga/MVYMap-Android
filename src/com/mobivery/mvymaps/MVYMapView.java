@@ -134,8 +134,11 @@ public class MVYMapView extends MapView {
 	 * To remove all POIs added with methods 'addPoi'
 	 */
 	public void cleanPois() {
-		itemizedOverlay.cleanAllPOIs();
-		mapLimits = new MVYMapLimits();
+
+		if (itemizedOverlay != null) {
+			itemizedOverlay.cleanAllPOIs();
+			mapLimits = new MVYMapLimits();
+		}
 	}
 	
 	/**
@@ -277,7 +280,8 @@ public class MVYMapView extends MapView {
 	 */
 	public void setLocationDelegate(MVYMapViewLocationDelegate locationDelegate) {
 		this.locationDelegate = locationDelegate;
-		setLocationListenerEnabled(true);
+//		setLocationListenerEnabled(true);
+		listenToLocations();
 	}
 	
 	/**
@@ -304,12 +308,12 @@ public class MVYMapView extends MapView {
 	private void listenToLocations() {
 		
 		// acquire a reference to the system Location Manager
-		if(locationManager == null) {
+		if (locationManager == null) {
 			locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 		}
 
 		// define a listener that responds to location updates
-		if(locationListener == null) {
+		if (locationListener == null) {
 			locationListener = new MVYLocationListener();
 		}
 
@@ -335,6 +339,8 @@ public class MVYMapView extends MapView {
 	 * Method to remove the listener of location changes
 	 */
 	private void disableListenToLocations() {
+		
+		Log.v("MVYMap", "MVYMapView disableListenToLocations");
 		try {
 			locationManager.removeUpdates(locationListener);
 		}
@@ -361,7 +367,7 @@ public class MVYMapView extends MapView {
 			userGeoPoint = new GeoPoint( (int)(location.getLatitude() * 1E6), 
 					(int)(location.getLongitude() * 1E6));
 			
-			if (locationListenerEnabled && locationDelegate != null) {
+			if (locationDelegate != null) {
 				// notify location delegate
 				locationDelegate.MVYMapViewLocationChanged(userGeoPoint);
 			}

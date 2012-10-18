@@ -18,4 +18,7 @@ To include it in your project, copy these files :
 	
 The other files in this project are to create an example of use.
 
-Pepe Arespacochaga
+Credits
+==================
+Jeff Gilfelt - Android MapView Balloons
+https://github.com/jgilfelt/android-mapviewballoons

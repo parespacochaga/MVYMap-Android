@@ -1,5 +1,8 @@
 package com.mobivery.mvymaps;
 
+import com.mobivery.mvymaps.MVYMapViewConfig.POIDefines.POIBalloonMode;
+import com.mobivery.mvymaps.MVYMapViewConfig.POIDefines.POIBounds;
+
 /**
  * MVYMapViewConfig
  * Configuration values for MVYMapView
@@ -38,6 +41,11 @@ public class MVYMapViewConfig {
 		
 		public static final int RES_ID_POI_DEFAULT = android.R.drawable.ic_menu_compass;
 		public static final int RES_ID_USER_DEFAULT = android.R.drawable.ic_menu_mylocation;
+	}
+	
+	public static class ZoomDefines {
+		
+		public static final int MAP_LIMITS_DEFAULT_ZOOM = 14;
 	}
 
 }

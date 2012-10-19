@@ -2,6 +2,7 @@ package com.mobivery.mvymaps.utils;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
+import com.mobivery.mvymaps.MVYMapViewConfig.ZoomDefines;
 
 /**
  * MVYMapLimits
@@ -17,7 +18,6 @@ public class MVYMapLimits {
 	private long lonMax;
 	private long lonMin;
 	private int pointsCount;
-	private static final int MAP_LIMITS_DEFAULT_ZOOM = 14;
 	
 	public MVYMapLimits() {
 		
@@ -44,7 +44,7 @@ public class MVYMapLimits {
 	public void applyLimitsToMap(MapView mapView) {
 		
 		if (pointsCount < 2) {
-			mapView.getController().setZoom(MAP_LIMITS_DEFAULT_ZOOM);
+			mapView.getController().setZoom(ZoomDefines.MAP_LIMITS_DEFAULT_ZOOM);
 		} else {
 			mapView.getController().zoomToSpan((int) ((latMax - latMin) * 1.1),(int) ((lonMax - lonMin) * 1.1));
 		}
@@ -79,7 +79,7 @@ public class MVYMapLimits {
 	}
 
 	public static int getMapLimitsDefaultZoom() {
-		return MAP_LIMITS_DEFAULT_ZOOM;
+		return ZoomDefines.MAP_LIMITS_DEFAULT_ZOOM;
 	}
 
 }

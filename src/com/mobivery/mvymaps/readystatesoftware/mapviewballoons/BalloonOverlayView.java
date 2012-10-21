@@ -16,8 +16,8 @@
 package com.mobivery.mvymaps.readystatesoftware.mapviewballoons;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.google.android.maps.OverlayItem;
 import com.mobivery.example.R;
+import com.mobivery.mvymaps.MVYMapViewConfig.POIDefines;
 
 /**
  * A view representing a MapView marker information balloon.
@@ -67,35 +68,6 @@ public class BalloonOverlayView<Item extends OverlayItem> extends FrameLayout {
 
 	}
 	
-	/**
-	 * Create a new BalloonOverlayView.
-	 * 
-	 * @param context - The activity context.
-	 * @param balloonBottomOffset - The bottom padding (in pixels) to be applied
-	 * when rendering this view.
-	 * @param balloonLeftOffset - The left padding (in pixels) to be applied
-	 * when rendering this view.
-	 * @author Pepe
-	 */
-	public BalloonOverlayView(Context context, int balloonBottomOffset, int balloonLeftOffset) {
-
-		super(context);
-
-		setPadding(10 + balloonLeftOffset, 0, 10, balloonBottomOffset);
-		
-		layout = new LimitLinearLayout(context);
-		layout.setVisibility(VISIBLE);
-
-		setupView(context, layout);
-
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.gravity = Gravity.NO_GRAVITY;
-
-		addView(layout, params);
-
-	}
-
 	/**
 	 * Inflate and initialize the BalloonOverlayView UI. Override this method
 	 * to provide a custom view/layout for the balloon. 
@@ -149,7 +121,8 @@ public class BalloonOverlayView<Item extends OverlayItem> extends FrameLayout {
 	
 	private class LimitLinearLayout extends LinearLayout {
 
-	    private static final int MAX_WIDTH_DP = 280;
+	    private int maxWidthDp = POIDefines.BALLOON_MAX_WIDTH_DP;
+	    
 	    
 	    final float SCALE = getContext().getResources().getDisplayMetrics().density;
 
@@ -163,9 +136,10 @@ public class BalloonOverlayView<Item extends OverlayItem> extends FrameLayout {
 
 	    @Override
 	    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	    	
 	        int mode = MeasureSpec.getMode(widthMeasureSpec);
 	        int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
-	        int adjustedMaxWidth = (int)(MAX_WIDTH_DP * SCALE + 0.5f);
+	        int adjustedMaxWidth = (int)(maxWidthDp * SCALE + 0.5f);
 	        int adjustedWidth = Math.min(measuredWidth, adjustedMaxWidth);
 	        int adjustedWidthMeasureSpec = MeasureSpec.makeMeasureSpec(adjustedWidth, mode);
 	        super.onMeasure(adjustedWidthMeasureSpec, heightMeasureSpec);

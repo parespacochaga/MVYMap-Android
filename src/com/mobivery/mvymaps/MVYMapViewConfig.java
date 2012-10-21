@@ -16,7 +16,8 @@ public class MVYMapViewConfig {
 		public static final POIBounds BOUNDS = POIBounds.CENTER_BOTTOM;
 		public static final POIBalloonMode BALLOON_MODE = POIBalloonMode.DISCLOSURE;
 		public static final int BALLOON_BOTTOM_OFFSET = 25;
-		public static final int BALLOON_LEFT_OFFSET = 0; //DEVELOPING
+		public static final int BALLOON_LEFT_OFFSET = 0;
+		public static final int BALLOON_MAX_WIDTH_DP = 280;
 		
 		public enum POIBounds {
 		    CENTER, 

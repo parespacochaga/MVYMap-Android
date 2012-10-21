@@ -145,16 +145,28 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 			
 			// Pepe: point with offset for balloon at right of marker
 			GeoPoint markerPoint = currentFocusedItem.getPoint();
-			Projection projection = mapView.getProjection();
-			Point p1 = new Point();
-			projection.toPixels(markerPoint, p1);
-			GeoPoint finalPoint = projection.fromPixels(p1.x + getBalloonLeftOffset(), p1.y);
+			GeoPoint finalPoint = applyLeftOffset(markerPoint);
 			// ....
 			
 			animateTo(index, finalPoint);
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Calculate point in map adding left offset in dpixels
+	 * @param point
+	 * @return point with offset
+	 * @author Pepe
+	 */
+	private GeoPoint applyLeftOffset(GeoPoint point) {
+		
+		Projection projection = mapView.getProjection();
+		Point p1 = new Point();
+		projection.toPixels(point, p1);
+		GeoPoint finalPoint = projection.fromPixels(p1.x + (getBalloonLeftOffset() / 2), p1.y);
+		return finalPoint;
 	}
 
 	/**
@@ -173,7 +185,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * can populate additional sub-views.
 	 */
 	protected BalloonOverlayView<Item> createBalloonOverlayView() {
-		return new BalloonOverlayView<Item>(getMapView().getContext(), getBalloonBottomOffset(), getBalloonLeftOffset());
+		return new BalloonOverlayView<Item>(getMapView().getContext(), getBalloonBottomOffset());
 	}
 	
 	/**
@@ -344,8 +356,9 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 			balloonView.setData(currentFocusedItem);
 		
 		GeoPoint point = currentFocusedItem.getPoint();
+		GeoPoint finalPoint = applyLeftOffset(point);
 		MapView.LayoutParams params = new MapView.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, point,
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, finalPoint,
 				MapView.LayoutParams.BOTTOM_CENTER);
 		params.mode = MapView.LayoutParams.MODE_MAP;
 		
